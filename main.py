@@ -56,6 +56,7 @@ class todo():
 			item=self.delete_todo_list_box.curselection()[0]
 			self.data.pop(item)
 			self.dump_data()
+			self.delete_todo_list_box.delete(item)
 			frame=self.frame_list.pop(item)
 			frame.destroy()
 			self.refresh()
@@ -65,7 +66,7 @@ class todo():
 		for item in self.data:
 			self.delete_todo_list_box.insert(tk.END, item["title"])
 
-		delete_button=tk.Button(self.delete_window,command=delete)
+		delete_button=tk.Button(self.delete_window,text="Delete",command=delete)
 		delete_button.pack()
 	def dump_data(self):
 		with open("todo.json","w") as f:
