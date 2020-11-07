@@ -3,6 +3,9 @@ from json import load,dump
 import pickle as pick
 class todo():
 	def __init__(self):
+		
+		self.load_passwd()
+	def passwd_checked(self):
 		self.root=tk.Tk()
 		self.list_todo()
 		self.print_todo()
@@ -10,8 +13,8 @@ class todo():
 		self.todo_dele_button=tk.Button(text="Delete Todo",command=self.delete_todo)
 		self.todo_button.grid(row=self.row_+1,column=0)
 		self.todo_dele_button.grid(row=self.row_+2,column=0)
-		# self.load_passwd()
 		self.root.mainloop()
+
 	def add_todo(self):
 		self.window=tk.Toplevel(self.root)
 		tk.Label(self.window,text="Title").pack()
@@ -96,29 +99,46 @@ class todo():
 		for frame in self.frame_list:
 			frame.destroy()
 		self.print_todo()
-	# def load_passwd(self):
-	# 	with open("password.todo","rb") as f:
-	# 		try:	
-	# 			self.passwd=pick.load(f)
-	# 			print(self.passwd)
-	# 		except Exception as err:
-	# 			print(err)
-	# 			self.get_passwd()
-	# def dump_passwd(self):
-	# 	with open("passwd.todo","wb") as f:
-	# 		pick.dump(self.passwd,f)
-	# def get_passwd(self):
-	# 	def get():
-	# 		self.passwd = self.passwd_entry.get()
-	# 		print(self.passwd)
-	# 		self.dump_passwd()
-	# 		window.destroy()
-	# 	window=tk.Toplevel(self.root)
-	# 	window.title="Password"
-	# 	tk.Label(window,text="Enter Password").pack()
-	# 	self.passwd_entry=tk.Entry(window,show="*")
-	# 	self.passwd_entry.pack()
-	# 	tk.Button(window,text="Save",command=get).pack()
+	def load_passwd(self):
+		with open("password.todo","rb") as f:
+			try:	
+				self.passwd=pick.load(f)
+				print(self.passwd)
+				self.check_passwd()
+			except Exception as err:
+				print(err)
+				self.get_passwd()
+	def dump_passwd(self):
+		with open("password.todo","wb") as f:
+			pick.dump(self.passwd,f)
+	def get_passwd(self):
+		def get():
+			self.passwd = self.passwd_entry.get()
+			print(self.passwd)
+			self.dump_passwd()
+			window.destroy()
+		window=tk.Toplevel(self.root)
+		window.title="Password"
+		tk.Label(window,text="Enter Password").pack()
+		self.passwd_entry=tk.Entry(window,show="*")
+		self.passwd_entry.pack()
+		tk.Button(window,text="Save",command=get).pack()
+	def check_passwd(self):
+		def check():
+			if enterd.get()==self.passwd:
+				window.destroy()
+				self.passwd_checked()
+
+			else:
+				tk.Label(window,text="Wrong Password Try again").pack()
+		window=tk.Tk()
+		tk.Label(window,text="Enter Password").pack()
+		enterd=tk.Entry(window,show="*")
+		enterd.pack()
+		tk.Button(window,text="Check",command=check).pack()
+		print("Check password")
+		window.mainloop()
+
 
 # todo().cli()
 todo()
